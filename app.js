@@ -24,16 +24,18 @@ app.use(express.urlencoded({extended: 'false'}))
 app.use(express.json())
 
 
+app.set('view engine', 'hbs');
+/*
 app.engine(
   "hbs",
   expressHbs.engine({
     extname: "hbs",
-    defaultLayout:'register',
+   defaultLayout:'index',
     layoutsDir: path.join(__dirname, "views")
   })
 );
-app.set('view engine', 'hbs')
-
+*/
+app.set("views", path.join(__dirname, 'views'));
 db.connect((error) => {
     if(error) {
         console.log(error)
@@ -43,15 +45,15 @@ db.connect((error) => {
 })
 
 app.get("/", (req, res) => {
-    res.render("index")
+    res.render("index");
 })
 
 app.get("/register", (req, res) => {
-    res.render("register")
+    res.render("register");
 })
 
 app.get("/login", (req, res) => {
-    res.render("login")
+    res.render("login");
 })
 
 app.post("/auth/register", (req, res) => {    

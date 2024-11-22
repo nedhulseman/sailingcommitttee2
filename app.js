@@ -1,5 +1,4 @@
 const express = require('express');
-const expressHbs = require("express-handlebars");
 const mysql = require("mysql")
 const path = require("path")
 const dotenv = require('dotenv')
@@ -23,19 +22,8 @@ app.use(express.static(publicDir))
 app.use(express.urlencoded({extended: 'false'}))
 app.use(express.json())
 
+app.set('view engine', 'hbs')
 
-app.set('view engine', 'hbs');
-/*
-app.engine(
-  "hbs",
-  expressHbs.engine({
-    extname: "hbs",
-   defaultLayout:'index',
-    layoutsDir: path.join(__dirname, "views")
-  })
-);
-*/
-app.set("views", path.join(__dirname, 'views'));
 db.connect((error) => {
     if(error) {
         console.log(error)
@@ -45,15 +33,15 @@ db.connect((error) => {
 })
 
 app.get("/", (req, res) => {
-    res.render("index");
+    res.render("index")
 })
 
 app.get("/register", (req, res) => {
-    res.render("register");
+    res.render("register")
 })
 
 app.get("/login", (req, res) => {
-    res.render("login");
+    res.render("login")
 })
 
 app.post("/auth/register", (req, res) => {    

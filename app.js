@@ -4,6 +4,9 @@ const path = require("path")
 const dotenv = require('dotenv')
 const jwt = require("jsonwebtoken")
 const bcrypt = require("bcryptjs")
+const Joi = require('joi');
+
+
 
 dotenv.config({ path: './.env'})
 
@@ -45,7 +48,8 @@ app.get("/login", (req, res) => {
 })
 
 app.post("/auth/login", async function(req, res, next) {
-	const  userSchema = Joi.obect().keys({
+	console.log("login attemped");
+	const  userSchema = Joi.object().keys({
 		'name':Joi.string().alphanum().min(5).max(30).required(),
 		'password':Joi.string().alphanum().min(8).max(50).required(),
 	});
@@ -53,7 +57,7 @@ app.post("/auth/login", async function(req, res, next) {
 		'name': req.body.name,
 		'password': req.body.password,
 	}
-	const result = Joi.validate(loginDetails, userSchema);
+	const result = userSchema.validate(loginDetails);
 	if (result) {
 		const profile = await dao.login(loginDetails);
 		if (profile) {
@@ -65,7 +69,7 @@ app.post("/auth/login", async function(req, res, next) {
 						'active':'profile'});
 		}
 	} else {
-		console.log("success!");
+		console.log("something??");
 	}
 })
 

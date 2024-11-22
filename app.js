@@ -44,6 +44,31 @@ app.get("/login", (req, res) => {
     res.render("login")
 })
 
+app.post("/auth/login", async function(req, res, next) {
+	const  userSchema = Joi.obect().keys({
+		'name':Joi.string().alphanum().min(5).max(30).required(),
+		'password':Joi.string().alphanum().min(8).max(50).required(),
+	});
+	const loginDetails = {
+		'name': req.body.name,
+		'password': req.body.password,
+	}
+	const result = Joi.validate(loginDetails, userSchema);
+	if (result) {
+		const profile = await dao.login(loginDetails);
+		if (profile) {
+			req.session.profile = profile;
+			res.redirect('/');
+		} else {
+			res.render('login', {'login': profile,
+						'message':'Could not authenticate using the user detail',
+						'active':'profile'});
+		}
+	} else {
+		console.log("success!");
+	}
+})
+
 app.post("/auth/register", (req, res) => {    
     const { name, email, password, password_confirm } = req.body
 
@@ -77,6 +102,13 @@ app.post("/auth/register", (req, res) => {
         })        
     })
 })
+
+app.get('/logout', async function(req, res, next) {
+    req.session.destroy(function(err) {
+        console.log('Destroyed session')
+     })
+    res.redirect('/');
+});
 
 app.listen(5000, ()=> {
     console.log("server started on port 5000")

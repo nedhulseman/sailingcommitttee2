@@ -5,7 +5,7 @@ const dotenv = require('dotenv')
 const jwt = require("jsonwebtoken")
 const bcrypt = require("bcryptjs")
 const Joi = require('joi');
-
+const session = require("express-session");
 
 
 dotenv.config({ path: './.env'})
@@ -24,6 +24,16 @@ const publicDir = path.join(__dirname, './public')
 app.use(express.static(publicDir))
 app.use(express.urlencoded({extended: 'false'}))
 app.use(express.json())
+
+app.use(session({  
+  secret: '398dhd',  
+  resave: true,
+  saveUninitialized: true,
+  cookie: { 
+    secure: true, // This will only work if you have https enabled!
+    maxAge: 60000 // 1 min
+  } 
+}));
 
 app.set('view engine', 'hbs')
 
@@ -59,7 +69,7 @@ app.post("/auth/login", async function(req, res, next) {
 	}
 	const result = userSchema.validate(loginDetails);
 	if (result) {
-		const profile = await dao.login(loginDetails);
+		/*const profile = await dao.login(loginDetails);
 		if (profile) {
 			req.session.profile = profile;
 			res.redirect('/');
@@ -67,7 +77,9 @@ app.post("/auth/login", async function(req, res, next) {
 			res.render('login', {'login': profile,
 						'message':'Could not authenticate using the user detail',
 						'active':'profile'});
-		}
+		}*/
+		req.session.name = loginDetails.name;
+		res.redirect('/');
 	} else {
 		console.log("something??");
 	}

@@ -79,10 +79,10 @@ app.post("/auth/login", async function(req, res, next) {
         }
         console.log(result);
         if (result.length == 0) { // no users found
-            alert("No users found with these credentials");
+            console.log("No users found with these credentials");
             res.redirect('/login');
         } else if (result.length > 1) {
-            alert("Multiple users associated with email");
+            console.log("Multiple users associated with email");
             res.redirect('/login');
         } else { // user exists but password has not been validated
             bcrypt.compare(password, result[0].password, (error, result) => {
@@ -92,7 +92,7 @@ app.post("/auth/login", async function(req, res, next) {
                     res.redirect('/');
                 }
                 else {
-                    alert("No users found with these credentials");
+                    console.log("No users found with these credentials");
                     res.redirect('/login');
                 }
             })

@@ -26,17 +26,20 @@ app.use(express.static(publicDir))
 app.use(express.urlencoded({extended: 'false'}))
 app.use(express.json())
 
+app.set('trust proxy', 1) // trust first proxy
 app.use(session({  
+  name  : 'nh',
   secret: '398dhd',  
-  resave: true,
-  saveUninitialized: true,
+  resave: false,
+  saveUninitialized: false,
   cookie: { 
-    secure: true, // This will only work if you have https enabled!
-    maxAge: 60000 // 1 min
+    secure: false, // This will only work if you have https enabled!
+    maxAge: 60000000 // 1 min
   } 
 }));
 var sessionChecker = (req, res, next) => {
-    console.log(`Session Checker: ${req.session.id}`.green);
+    console.log("... checking session");
+    console.log(`Session Checker: ${req.session.email}`.green);
     console.log(req.session);
     if (req.session.email) {
         console.log(`Found User Session`.green);
@@ -57,8 +60,8 @@ db.connect((error) => {
     }
 })
 
-app.get("/", (req, res) => {
-    res.render("index")
+app.get("/", sessionChecker, (req, res) => {
+    res.render("index", {"username":req.session.username})
 })
 
 app.get("/register", (req, res) => {
@@ -72,28 +75,29 @@ app.get("/login", (req, res) => {
 app.post("/auth/login", async function(req, res, next) {
     console.log("login attemped");
     const { email, password } = req.body
-
-    db.query('SELECT * FROM users WHERE email = ?', [email], async (error, result) => {
+    const message = 'No users found with these credentials';
+    db.query('SELECT * FROM users WHERE email = ?', [email], async (error, query_result) => {
         if (error) {
             console.log(error)
         }
-        console.log(result);
-        if (result.length == 0) { // no users found
+        console.log(query_result);
+        if (query_result.length == 0) { // no users found
             console.log("No users found with these credentials");
-            res.redirect('/login');
-        } else if (result.length > 1) {
+            res.render('login', {message:message});
+        } else if (query_result.length > 1) {
             console.log("Multiple users associated with email");
-            res.redirect('/login');
+            res.render('login', {message:message});
         } else { // user exists but password has not been validated
-            bcrypt.compare(password, result[0].password, (error, result) => {
+            bcrypt.compare(password, query_result[0].password, (error, result) => {
                 console.log(result);
                 if (result) {
-                    req.session.email = email;
+		    req.session.email = query_result[0].email;
+		    req.session.username = query_result[0].name;
                     res.redirect('/');
                 }
                 else {
                     console.log("No users found with these credentials");
-                    res.redirect('/login');
+                    res.render('login', {message:message});
                 }
             })
         }
@@ -104,7 +108,6 @@ app.post("/auth/login", async function(req, res, next) {
 
 app.post("/auth/register", (req, res) => {    
     const { name, email, password, password_confirm } = req.body
-
     db.query('SELECT email FROM users WHERE email = ?', [email], async (error, result) => {
         if(error){
             console.log(error)

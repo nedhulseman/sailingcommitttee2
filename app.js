@@ -95,7 +95,9 @@ app.post("/auth/login", async function(req, res, next) {
                     alert("No users found with these credentials");
                     res.redirect('/login');
                 }
+            }
         }
+    });
         
 	
 })

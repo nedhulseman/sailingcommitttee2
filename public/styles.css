@@ -1,5 +1,5 @@
 .navbar a:hover, .dropdown:hover .dropbtn {
-  background-color: red;
+  border: 3px white;;
 }
 .dropbtn {
 	background-color:black;

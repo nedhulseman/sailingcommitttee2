@@ -6,6 +6,7 @@ const jwt = require("jsonwebtoken")
 const bcrypt = require("bcryptjs")
 const Joi = require('joi');
 const session = require("express-session");
+const saltRounds = 11;
 
 
 dotenv.config({ path: './.env'})
@@ -34,7 +35,17 @@ app.use(session({
     maxAge: 60000 // 1 min
   } 
 }));
-
+var sessionChecker = (req, res, next) => {
+    console.log(`Session Checker: ${req.session.id}`.green);
+    console.log(req.session);
+    if (req.session.email) {
+        console.log(`Found User Session`.green);
+        next();
+    } else {
+        console.log(`No User Session Found`.red);
+        res.redirect('/login');
+    }
+};
 
 app.set('view engine', 'hbs')
 
@@ -59,31 +70,34 @@ app.get("/login", (req, res) => {
 })
 
 app.post("/auth/login", async function(req, res, next) {
-	console.log("login attemped");
-	const  userSchema = Joi.object().keys({
-		'name':Joi.string().alphanum().min(5).max(30).required(),
-		'password':Joi.string().alphanum().min(8).max(50).required(),
-	});
-	const loginDetails = {
-		'name': req.body.name,
-		'password': req.body.password,
-	}
-	const result = userSchema.validate(loginDetails);
-	if (result) {
-		/*const profile = await dao.login(loginDetails);
-		if (profile) {
-			req.session.profile = profile;
-			res.redirect('/');
-		} else {
-			res.render('login', {'login': profile,
-						'message':'Could not authenticate using the user detail',
-						'active':'profile'});
-		}*/
-		req.session.name = loginDetails.name;
-		res.redirect('/');
-	} else {
-		console.log("something??");
-	}
+    console.log("login attemped");
+    const { email, password } = req.body
+
+    db.query('SELECT * FROM users WHERE email = ?', [email], async (error, result) => {
+        if (error) {
+            console.log(error)
+        }
+        console.log(result);
+        if (result.length == 0) { // no users found
+            alert("No users found with these credentials");
+            res.redirect('/login');
+        } else if (result.length > 1) {
+            alert("Multiple users associated with email");
+            res.redirect('/login');
+        } else { // user exists but password has not been validated
+            bcrypt.compare(password, result[0].password, (error, result) => {
+                console.log(result);
+                if (result) {
+                    req.session.email = email;
+                    res.redirect('/');
+                }
+                else {
+                    alert("No users found with these credentials");
+                    res.redirect('/login');
+                }
+        }
+        
+	
 })
 
 app.post("/auth/register", (req, res) => {    
@@ -104,7 +118,7 @@ app.post("/auth/register", (req, res) => {
             })
         }
 
-        let hashedPassword = await bcrypt.hash(password, 8)
+        let hashedPassword = await bcrypt.hash(password, saltRounds)
 
         console.log(hashedPassword)
        

@@ -156,6 +156,18 @@ app.get('/logout', async function(req, res, next) {
     res.redirect('/');
 });
 
+//io racing code
+io.on('connection', function (socket) {
+    console.log('a user has connected!');
+    io.emit('connection', req.session.name);
+
+    socket.on('disconnect', function () {
+        //delete users[socket.id]
+        console.log("user left")
+    });
+
+
+
 app.listen(5000, ()=> {
     console.log("server started on port 5000")
 })

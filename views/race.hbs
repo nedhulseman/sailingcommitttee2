@@ -57,7 +57,7 @@
     <div id="map" style="width: 600px; height: 400px;"></div>
     <p id="location-history"></p>
     <script>
-  
+
 
          const map = L.map('map').setView([38.8512, -77.0403], 13);
 
@@ -65,6 +65,11 @@
              maxZoom: 19,
              attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
          }).addTo(map);
+
+         socket.on('connection', function (name) {
+           console.log("user joined: @", name);
+          });
+
    </script>
 
 </body>

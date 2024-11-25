@@ -12,7 +12,7 @@ const saltRounds = 11;
 
 //const app = express(); // replaced with below
 const app = require('http').createServer(express);
-const io = require('socket.io')(server);
+const io = require('socket.io')(app);
 
 dotenv.config({ path: './.env'})
 

@@ -7,6 +7,8 @@ const bcrypt = require("bcryptjs")
 const Joi = require('joi');
 const session = require("express-session");
 var socketio = require('socket.io');
+var http = require('http');
+
 const saltRounds = 11;
 
 

@@ -163,8 +163,9 @@ io.on('connection', function (socket) {
 
     socket.on('disconnect', function () {
         //delete users[socket.id]
-        console.log("user left")
+        console.log("user left");
     });
+});
 
 
 

@@ -9,9 +9,13 @@ const session = require("express-session");
 const saltRounds = 11;
 
 
+
+//const app = express(); // replaced with below
+const app = require('http').createServer(express);
+const io = require('socket.io')(server);
+
 dotenv.config({ path: './.env'})
 
-const app = express();
 
 const db = mysql.createConnection({
     host: process.env.DATABASE_HOST,

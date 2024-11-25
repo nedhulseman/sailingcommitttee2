@@ -57,45 +57,7 @@
     <div id="map" style="width: 600px; height: 400px;"></div>
     <p id="location-history"></p>
     <script>
-        var socket = io();
-         var users = 0;
-         const location_history = document.getElementById('location-history');
-
-         function success(position) {
-             //retrieve lat and long
-             var latitude = position.coords.latitude;
-             var longitude = position.coords.longitude;
-             socket.emit('get-location', socket.id, [latitude, longitude]);
-
-         }
-
-         function error() {
-             socket.emit('get-location', socket.id, [0, 0]);
-         }
-
-
-
-
-         socket.on('connection', function () {
-
-         });
-         socket.on('request-location', function () {
-             navigator.geolocation.getCurrentPosition(success, error);
-             //console.log(loc);
-             //users = users + 1;
-             //socket.emit('get-location', socket_id, loc);
-         });
-         socket.on('push-location-html', function (location_data) {
-             location_history.innerHTML = ""
-             for (const [key, value] of Object.entries(location_data)) {
-                 location_history.innerHTML += key + "<br>";
-
-                 for (let i = 0; i < value.location_history.length; i++) {
-                     location_history.innerHTML += value.location_history[i] + "<br>";
-                 }
-                 location_history.innerHTML += '<br><br>';
-             }
-         })
+  
 
          const map = L.map('map').setView([38.8512, -77.0403], 13);
 

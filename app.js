@@ -27,15 +27,15 @@ app.use(express.urlencoded({extended: 'false'}))
 app.use(express.json())
 
 app.set('trust proxy', 1) // trust first proxy
-app.use(session({  
+app.use(session({
   name  : 'nh',
-  secret: '398dhd',  
+  secret: '398dhd',
   resave: false,
   saveUninitialized: false,
-  cookie: { 
+  cookie: {
     secure: false, // This will only work if you have https enabled!
     maxAge: 60000000 // 1 min
-  } 
+  }
 }));
 var sessionChecker = (req, res, next) => {
     console.log("... checking session");
@@ -71,6 +71,9 @@ app.get("/register", (req, res) => {
 app.get("/login", (req, res) => {
     res.render("login")
 })
+app.get("/race", (req, res) => {
+  res.render("race");
+})
 
 app.post("/auth/login", async function(req, res, next) {
     console.log("login attemped");
@@ -102,11 +105,11 @@ app.post("/auth/login", async function(req, res, next) {
             })
         }
     });
-        
-	
+
+
 })
 
-app.post("/auth/register", (req, res) => {    
+app.post("/auth/register", (req, res) => {
     const { name, email, password, password_confirm } = req.body
     db.query('SELECT email FROM users WHERE email = ?', [email], async (error, result) => {
         if(error){
@@ -126,7 +129,7 @@ app.post("/auth/register", (req, res) => {
         let hashedPassword = await bcrypt.hash(password, saltRounds)
 
         console.log(hashedPassword)
-       
+
         db.query('INSERT INTO users SET?', {name: name, email: email, password: hashedPassword}, (err, result) => {
             if(error) {
                 console.log(error)
@@ -135,7 +138,7 @@ app.post("/auth/register", (req, res) => {
                     message: 'User registered!'
                 })
             }
-        })        
+        })
     })
 })
 

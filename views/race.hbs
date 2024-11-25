@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="/styles.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT" crossorigin="anonymous">
+    <link rel="shortcut icon" type="image/x-icon" href="docs/images/favicon.ico" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+    <script src="/socket.io/socket.io.js"></script>
+    <style>
+        html, body {
+            height: 100%;
+            margin: 0;
+        }
+
+        .leaflet-container {
+            height: 400px;
+            width: 600px;
+            max-width: 100%;
+            max-height: 100%;
+        }
+    </style>
+</head>
+<body>
+    {{!-- Navigation links --}}
+    <nav>
+        <h4>Sail Committee</h4>
+        <ul>
+            <li><a href="/">Home</a></li>
+		 <div class="dropdown">
+			 <button class="dropbtn">
+			  <svg class=nav-icon xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-person-square" viewBox="0 0 16 16">
+  			  <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0"/>
+  			  <path d="M2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2zm12 1a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1v-1c0-1-1-4-6-4s-6 3-6 4v1a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1z"/>
+</svg>
+			  <i class="fa fa-caret-down"></i>
+			</button>
+		   <div class="dropdown-content">
+		    <a href="/profile">Profile</a>
+		    <a href="/login">Login</a>
+		    <a href="/register">Register New User</a>
+
+		   </div>
+		 </div>
+
+        </ul>
+    </nav>
+    {{!-- Body --}}
+    <h1>HTML Geolocation</h1>
+
+
+    <br><br><br>
+    <div id="map" style="width: 600px; height: 400px;"></div>
+    <p id="location-history"></p>
+    <script>
+        var socket = io();
+         var users = 0;
+         const location_history = document.getElementById('location-history');
+
+         function success(position) {
+             //retrieve lat and long
+             var latitude = position.coords.latitude;
+             var longitude = position.coords.longitude;
+             socket.emit('get-location', socket.id, [latitude, longitude]);
+
+         }
+
+         function error() {
+             socket.emit('get-location', socket.id, [0, 0]);
+         }
+
+
+
+
+         socket.on('connection', function () {
+
+         });
+         socket.on('request-location', function () {
+             navigator.geolocation.getCurrentPosition(success, error);
+             //console.log(loc);
+             //users = users + 1;
+             //socket.emit('get-location', socket_id, loc);
+         });
+         socket.on('push-location-html', function (location_data) {
+             location_history.innerHTML = ""
+             for (const [key, value] of Object.entries(location_data)) {
+                 location_history.innerHTML += key + "<br>";
+
+                 for (let i = 0; i < value.location_history.length; i++) {
+                     location_history.innerHTML += value.location_history[i] + "<br>";
+                 }
+                 location_history.innerHTML += '<br><br>';
+             }
+         })
+
+         const map = L.map('map').setView([38.8512, -77.0403], 13);
+
+         const tiles = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+             maxZoom: 19,
+             attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+         }).addTo(map);
+   </script>
+
+</body>
+</html>

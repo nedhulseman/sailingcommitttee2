@@ -81,18 +81,20 @@
                         lat: lat,
                         lon: lon
                         },
+                    }
                   function (error, response, body) {
                       if (!error && response.statusCode == 200) {
                           console.log(body);
                       }
                   }
               );
-              
+
           }
 
           function error() {
               console.log("sending location data had error");
           }
+          setInterval(navigator.geolocation.getCurrentPosition(success, error), 5000);
 
 
    </script>

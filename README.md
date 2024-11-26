@@ -55,8 +55,17 @@ server {
     password VARCHAR(255),
 primary key (id)
 );```
+```CREATE TABLE race_location (
+    id INT(11) AUTO_INCREMENT,
+    primary key (id),
+    race_id INT(11),
+    boat_id INT(11),
+    email VARCHAR(100),
+    ts TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    lat DECIMAL(10, 8),
+    lon DECIMAL(11, 8)
+);```
 
-```
 ## Resources
 - Deploying Node: https://www.sammeechward.com/deploying-full-stack-js-to-aws-ec2
 - Mysql: https://medium.com/@rohan_precise/step-by-step-guide-setting-up-and-connecting-mysql-on-ec2-ubuntu-instance-72>

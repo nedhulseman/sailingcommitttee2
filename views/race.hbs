@@ -10,7 +10,6 @@
     <link rel="shortcut icon" type="image/x-icon" href="docs/images/favicon.ico" />
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
-    <script src="/socket.io/socket.io.js"></script>
     <style>
         html, body {
             height: 100%;
@@ -57,7 +56,7 @@
     <div id="map" style="width: 600px; height: 400px;"></div>
     <p id="location-history"></p>
     <script>
-	var socket = io();
+        var request = require('request');
 
          const map = L.map('map').setView([38.8512, -77.0403], 13);
 
@@ -66,9 +65,35 @@
              attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
          }).addTo(map);
 
-         socket.on('connection', function (name) {
-           console.log("user joined: @", name);
-          });
+
+
+         function success(position) {
+              //retrieve lat and long
+              var latitude = position.coords.latitude;
+              var longitude = position.coords.longitude;
+              //socket.emit('get-location', socket.id, [latitude, longitude]);
+              request.post(
+                  "/loc/send",
+                  { json: {
+                        race_id: 1000,
+                        boat_id: 1000,
+                        email: "temp_email",
+                        lat: lat,
+                        lon: lon
+                        },
+                  function (error, response, body) {
+                      if (!error && response.statusCode == 200) {
+                          console.log(body);
+                      }
+                  }
+              );
+              
+          }
+
+          function error() {
+              console.log("sending location data had error");
+          }
+
 
    </script>
 

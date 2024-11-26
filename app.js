@@ -148,6 +148,30 @@ app.post("/auth/register", (req, res) => {
         })
     })
 })
+app.post("loc/send",(req, res) => {
+  const { race_id, boat_id, email, ts, lat, lon } = req.body
+
+
+  // PLACEHOLDER FOR VALIDATION
+  db.query('INSERT INTO race_location SET?', {
+          race_id: race_id,
+          boat_id: boat_id,
+          email: email,
+          ts: Date(), // get ts 
+          lat: lat,
+          lon: lon
+        }, (err, result) => {
+            if(error) {
+                console.log(error)
+            } else {
+                return res.render('race', {
+                    message: 'User registered!'
+                })
+            }
+  })
+
+})
+
 
 app.get('/logout', async function(req, res, next) {
     req.session.destroy(function(err) {

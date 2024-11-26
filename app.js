@@ -15,7 +15,7 @@ const saltRounds = 11;
 
 const app = express();
 var server = http.createServer(app);
-var io = socketio(server);
+//var io = socketio(server);
 
 dotenv.config({ path: './.env'})
 
@@ -156,6 +156,7 @@ app.get('/logout', async function(req, res, next) {
     res.redirect('/');
 });
 
+/*
 //io racing code
 io.on('connection', function (socket) {
     console.log('a user has connected!');
@@ -166,7 +167,7 @@ io.on('connection', function (socket) {
         console.log("user left");
     });
 });
-
+*/
 
 
 app.listen(5000, ()=> {

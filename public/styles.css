@@ -1,3 +1,14 @@
+#login-page {
+    /*background-image: url(img/login_background.jpg);
+    background-position: top 110px center;
+    background-repeat:no-repeat;*/
+    background: black;
+    overflow:hidden;
+}
+.background-img {
+   object-fit: cover;
+   opacity: 0.4;
+}
 .navbar a:hover, .dropdown:hover .dropbtn {
   border: 3px white;;
 }

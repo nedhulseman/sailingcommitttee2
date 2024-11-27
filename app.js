@@ -78,8 +78,8 @@ app.get("/register", (req, res) => {
 app.get("/login", (req, res) => {
     res.render("login")
 })
-app.get("/race", (req, res) => {
-  res.render("race");
+app.get("/race", sessionChecker, (req, res) => {
+  res.render("race", {"username":req.session.username});
 })
 
 app.post("/auth/login", async function(req, res, next) {
@@ -150,8 +150,6 @@ app.post("/auth/register", (req, res) => {
 })
 app.post("/loc/send",(req, res) => {
   const { race_id, boat_id, email, ts, lat, lon } = req.body
-
-
   // PLACEHOLDER FOR VALIDATION
   console.log("...adding loc");
   db.query('INSERT INTO race_location SET?', {

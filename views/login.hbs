@@ -10,7 +10,6 @@
   </head>
 </head>
 <body id="login-page">
-    <img class="background-img" src="img/login_background.jpg">
     {{!-- Navigation links --}}
     <nav>
         <h4>Sail Committee</h4>
@@ -28,7 +27,7 @@
 		    <a href="/profile">Profile</a>
 		    <a href="/login">Login</a>
 		    <a href="/register">Register New User</a>
-     
+
 		   </div>
 		 </div>
 
@@ -36,19 +35,19 @@
     </nav>
     {{!-- Body --}}
     <div class="container mt-4">
-        <div class="card" style="width: 18rem;">            
-            <div class="card-header">Login Form</div>    
+        <div class="card" style="width: 18rem;">
+            <div class="card-header">Login Form</div>
             <div class="card-body">
                 <form action="/auth/login", method="POST">
                     <div class="mb-3">
                         <label for="name-lgn" class="form-label">Email</label>
-                        <input type="text" class="form-control" id="name-lgn" name="email">                        
-                    </div>                    
+                        <input type="text" class="form-control" id="name-lgn" name="email">
+                    </div>
                     <div class="mb-3">
                         <label for="password-lgn" class="form-label">Password</label>
                         <input type="password" class="form-control" id="password-lgn" name="password">
                     </div>
-                    
+
                     <button type="submit" class="btn btn-primary">Submit</button>
                 </form>
             </div>

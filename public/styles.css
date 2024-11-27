@@ -1,9 +1,9 @@
 #login-page {
-    /*background-image: url(img/login_background.jpg);
+    background-image: url(img/login_background-drk.jpg);
     background-position: top 110px center;
-    background-repeat:no-repeat;*/
-    background: black;
-    overflow:hidden;
+    background-repeat:no-repeat;
+    background: black;/*
+    overflow:hidden;*/
 }
 .background-img {
    object-fit: cover;
@@ -65,8 +65,8 @@ nav ul {
     align-items: center;
 }
 
-nav li {    
-    list-style: none;    
+nav li {
+    list-style: none;
 }
 
 nav li a {

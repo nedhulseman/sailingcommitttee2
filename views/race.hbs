@@ -89,7 +89,10 @@
           function error() {
               console.log("sending location data had error");
           }
-          setInterval(navigator.geolocation.getCurrentPosition(success, error), 5000);
+          function post_loc(){
+            navigator.geolocation.getCurrentPosition(success, error);
+          }
+          setInterval(post_loc, 5000);
 
 
    </script>

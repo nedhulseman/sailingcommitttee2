@@ -148,7 +148,7 @@ app.post("/auth/register", (req, res) => {
         })
     })
 })
-app.post("loc/send",(req, res) => {
+app.post("/loc/send",(req, res) => {
   const { race_id, boat_id, email, ts, lat, lon } = req.body
 
 
@@ -194,6 +194,6 @@ io.on('connection', function (socket) {
 */
 
 
-app.listen(5000, ()=> {
+app.listen(8080, ()=> {
     console.log("server started on port 5000")
 })

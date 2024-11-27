@@ -157,10 +157,10 @@ app.post("loc/send",(req, res) => {
           race_id: race_id,
           boat_id: boat_id,
           email: email,
-          ts: Date(), // get ts 
+          ts: new Date().toISOString().slice(0, 19).replace('T', ' '),
           lat: lat,
           lon: lon
-        }, (err, result) => {
+        }, (error, result) => {
             if(error) {
                 console.log(error)
             } else {

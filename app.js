@@ -153,6 +153,7 @@ app.post("/loc/send",(req, res) => {
 
 
   // PLACEHOLDER FOR VALIDATION
+  console.log("...adding loc");
   db.query('INSERT INTO race_location SET?', {
           race_id: race_id,
           boat_id: boat_id,

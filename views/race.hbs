@@ -66,7 +66,7 @@
             <h4 class="alert alert-danger mt-4">{{message}}</h4>
     {{/if}}
     <script>
-	 var socket = io();
+	       var socket = io();
 
          const map = L.map('map').setView([38.8512, -77.0403], 13);
 
@@ -82,18 +82,23 @@
               var latitude = position.coords.latitude;
               var longitude = position.coords.longitude;
               //socket.emit('get-location', socket.id, [latitude, longitude]);
-
-	      console.log("POSTING...")
+              data_to_send = {
+                  race_id: 1001,
+                  boat_id: 1001,
+                  email: "{{#if email }}{{email}}{{/if}}",
+                  lat: latitude,
+                  lon: longitude
+              }
+              /* //Using POST
+	            console.log("POSTING...")
               var xhr = new XMLHttpRequest();
               xhr.open("POST", "/loc/send", true);
               xhr.setRequestHeader('Content-Type', 'application/json');
-              xhr.send(JSON.stringify({
-                race_id: 1001,
-                boat_id: 1001,
-                email: "{{#if email }}{{email}}{{/if}}",
-                lat: latitude,
-                lon: longitude
-              }));
+              xhr.send(JSON.stringify(data_to_send));
+              */
+              //Using socket
+              socket.emit('share-location', data_to_send);
+
 
           }
 

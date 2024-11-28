@@ -166,11 +166,25 @@ app.post("/loc/send",(req, res) => {
             if(error) {
                 console.log(error)
             } else {
+
+              db.query('SELECT * FROM race_location WHERE race_id = ?', [race_id], async (error, query_result) => {
+                  if (error) {
+                      console.log(error);
+                      return res.render('race', {
+                        "username":req.session.username,
+                        "email": req.session.email,
+                        "message": "error in querying location data..."
+                      })
+                  }
                 return res.render('race', {
-                    message: 'User registered!'
+                  "username":req.session.username,
+                  "email": req.session.email,
+                  "data": query_result
                 })
+              })
             }
-  })
+          }
+  )
 
 })
 

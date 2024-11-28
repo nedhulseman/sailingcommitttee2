@@ -76,17 +76,13 @@
               xhr.open("POST", "/loc/send", true);
               xhr.setRequestHeader('Content-Type', 'application/json');
               xhr.send(JSON.stringify({
-                race_id: 1000,
-                boat_id: 1000,
-<<<<<<< HEAD
-                email: "{{email}}",
-=======
+                race_id: 1001,
+                boat_id: 1001,
                 email: {{#if email }}{{email}}{{/if}},
->>>>>>> refs/remotes/origin/master
                 lat: latitude,
                 lon: longitude
               }));
-
+          //{{#if data }}{{data}}{{/if}}
 
           }
 

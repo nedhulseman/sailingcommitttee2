@@ -14,14 +14,19 @@ const saltRounds = 11;
 
 
 const app = express();
-//var io = socketio(server);
+const server = http.createServer(app);
+const io = new Server(server);
 
 
+io.on('connection', (socket) => {
+  console.log("User connected")
+  socket.on("disconnect", () => {
+    console.log("user disconnected")
+  })
+})
 
 
 dotenv.config({ path: './.env'})
-
-
 const db = mysql.createConnection({
     host: process.env.DATABASE_HOST,
     user: process.env.DATABASE_USER,
@@ -221,15 +226,7 @@ io.on('connection', function (socket) {
 });
 */
 
-
-var server = http.createServer(app);
-const io = new Server(server);
-io.on('connection', (socket) => {
-  console.log("User connected")
-  socket.on("disconnect", () => {
-    console.log("user disconnected")
-  })
-})
-io.listen(8080, ()=> {
-    console.log("server started on port 5000")
+const PORT = 8080
+server.listen(PORT, ()=> {
+    console.log(`server started on port ${PORT}``)
 })

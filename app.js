@@ -176,6 +176,7 @@ app.post("/loc/send",(req, res) => {
                         "message": "error in querying location data..."
                       })
                   }
+                  console.log(query_result);
                 return res.render('race', {
                   "username":req.session.username,
                   "email": req.session.email,

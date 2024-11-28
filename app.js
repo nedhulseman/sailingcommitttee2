@@ -166,13 +166,14 @@ app.post("/loc/send",(req, res) => {
             if(error) {
                 console.log(error)
             } else {
-		            console.log(race_id);
-                return res.render('race', {
-                  "username":req.session.username,
-                  "email": req.session.email,
-                  "message": "location shared",
-                  "data": [1,2,3]
-                })
+		console.log(race_id);
+		return res.render("index");
+               // return res.render('race', {
+               //   "username":req.session.username,
+               //   "email": req.session.email,
+               //   "message": "location shared",
+               //   "data": [1,2,3]
+               // })
               /*
               db.query('SELECT * FROM race_location WHERE race_id = ?', [race_id], async (error, query_result) => {
                   if (error) {

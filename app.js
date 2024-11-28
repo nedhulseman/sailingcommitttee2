@@ -6,7 +6,7 @@ const jwt = require("jsonwebtoken")
 const bcrypt = require("bcryptjs")
 const Joi = require('joi');
 const session = require("express-session");
-var socketio = require('socket.io');
+const { Server } = require("socket.io");
 var http = require('http');
 
 const saltRounds = 11;
@@ -16,6 +16,11 @@ const saltRounds = 11;
 const app = express();
 var server = http.createServer(app);
 //var io = socketio(server);
+const io = new Server(server);
+
+io.on("connection", (socket) => {
+  console.log("connected");
+});
 
 dotenv.config({ path: './.env'})
 

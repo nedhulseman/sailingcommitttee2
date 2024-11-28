@@ -6,10 +6,10 @@
    /* background: black;/*
     overflow:hidden;*/
 }
-.background-img {
+/*.background-img {
    object-fit: cover;
    opacity: 0.4;
-}
+}*/
 .navbar a:hover, .dropdown:hover .dropbtn {
   border: 3px white;;
 }

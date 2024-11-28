@@ -82,7 +82,6 @@
                 lat: latitude,
                 lon: longitude
               }));
-          console.log("{{#if data }}{{data}}{{/if}}");
 
           }
 
@@ -93,8 +92,9 @@
             navigator.geolocation.getCurrentPosition(success, error);
           }
           setInterval(post_loc, 5000);
-
-
+          console.log("...data");
+  	  console.log("{{#if data }}{{data}}{{/if}}");
+	console.log("#{data}");
    </script>
 
 </body>

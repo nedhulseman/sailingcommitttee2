@@ -81,7 +81,8 @@ app.get("/login", (req, res) => {
 app.get("/race", sessionChecker, (req, res) => {
   res.render("race", {
 		"username":req.session.username,
-		"email": req.session.email
+		"email": req.session.email,
+		"data": [1,2,3]
 	});
 })
 
@@ -166,6 +167,7 @@ app.post("/loc/send",(req, res) => {
             if(error) {
                 console.log(error)
             } else {
+		            console.log(race_id);
 
               db.query('SELECT * FROM race_location WHERE race_id = ?', [race_id], async (error, query_result) => {
                   if (error) {

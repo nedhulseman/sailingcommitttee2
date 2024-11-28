@@ -78,7 +78,7 @@
               xhr.send(JSON.stringify({
                 race_id: 1000,
                 boat_id: 1000,
-                email: {{email}},
+                email: {{#if email }}{{email}}{{/if}},
                 lat: latitude,
                 lon: longitude
               }));

@@ -79,7 +79,10 @@ app.get("/login", (req, res) => {
     res.render("login")
 })
 app.get("/race", sessionChecker, (req, res) => {
-  res.render("race", {"username":req.session.username});
+  res.render("race", {
+		"username":req.session.username,
+		"email": req.session.email
+	});
 })
 
 app.post("/auth/login", async function(req, res, next) {

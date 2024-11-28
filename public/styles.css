@@ -1,8 +1,9 @@
 #login-page {
-    background-image: url(img/login_background-drk.jpg);
+    background-image:  url(img/login_background_drk.jpg);
     background-position: top 110px center;
     background-repeat:no-repeat;
-    background: black;/*
+    background-size: 100%;
+   /* background: black;/*
     overflow:hidden;*/
 }
 /*.background-img {

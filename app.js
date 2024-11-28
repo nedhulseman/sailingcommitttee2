@@ -81,8 +81,7 @@ app.get("/login", (req, res) => {
 app.get("/race", sessionChecker, (req, res) => {
   res.render("race", {
 		"username":req.session.username,
-		"email": req.session.email,
-		"data": [1,2,3]
+		"email": req.session.email
 	});
 })
 
@@ -178,11 +177,12 @@ app.post("/loc/send",(req, res) => {
                         "message": "error in querying location data..."
                       })
                   }
-		console.log(query_result);
+		console.log(query_result.slice(-5,));
                 return res.render('race', {
                   "username":req.session.username,
                   "email": req.session.email,
-                  "data": query_result
+		 "message": "location shared",
+                  "data": [1,2,3]
                 })
               })
             }

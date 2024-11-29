@@ -78,15 +78,7 @@
               var location_history = document.getElementById('location-history');
               location_history.innerHTML = ""
               location_history.innerHTML = data;
-              /*
-              for (const [key, value] of Object.entries(location_data)) {
-                  location_history.innerHTML += key + "<br>";
 
-                  for (let i = 0; i < value.location_history.length; i++) {
-                      location_history.innerHTML += value.location_history[i] + "<br>";
-                  }
-                  location_history.innerHTML += '<br><br>';
-              } */
          });
 
          function success(position) {

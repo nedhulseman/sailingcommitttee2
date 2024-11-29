@@ -33,7 +33,7 @@ io.on('connection', (socket) => {
               if(error) {
                   console.log(error)
               } else {
-                console.log("pass")
+                console.log("... location data added")
               }
             }
     );
@@ -41,7 +41,7 @@ io.on('connection', (socket) => {
         if(error){
             console.log(error)
         } else {
-          socket.emit("update-regatta", JSON.stringify(result));
+          socket.emit("update-regatta", result);//JSON.stringify(result)
         }
 
 

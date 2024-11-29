@@ -60,7 +60,7 @@
     <br><br><br>
     <div id="map" style="width: 600px; height: 400px;"></div>
     {{#if data}}
-	<p id="location-history">{{data}}</p>
+  	<p id="location-history">{{data}}</p>
     {{/if}}
     {{#if message }}
             <h4 class="alert alert-danger mt-4">{{message}}</h4>
@@ -75,7 +75,21 @@
              attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
          }).addTo(map);
 
+          socket.on('update-regatta', function(data) {
+              data = JSON.parse(data);
+              var location_history = document.getElementById('location-history');
+              location_history.innerHTML = ""
+              location_history.innerHTML = data;
+              /*
+              for (const [key, value] of Object.entries(location_data)) {
+                  location_history.innerHTML += key + "<br>";
 
+                  for (let i = 0; i < value.location_history.length; i++) {
+                      location_history.innerHTML += value.location_history[i] + "<br>";
+                  }
+                  location_history.innerHTML += '<br><br>';
+              } */
+         });
 
          function success(position) {
               //retrieve lat and long
@@ -97,10 +111,8 @@
               xhr.send(JSON.stringify(data_to_send));
               */
               //Using socket
-	      console.log("... emmitting socket")
+	             console.log("... emmitting socket")
               socket.emit('share-location', JSON.stringify(data_to_send));
-
-
           }
 
           function error() {

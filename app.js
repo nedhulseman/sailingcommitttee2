@@ -22,8 +22,30 @@ io.on('connection', (socket) => {
   console.log("User connected")
   socket.on('share-location', (user_data) => {
     user_data = JSON.parse(user_data);
-    console.log('Data!: ');
-    console.log(user_data);
+    db.query('INSERT INTO race_location SET?', {
+            race_id: user_data.race_id,
+            boat_id: user_data.boat_id,
+            email: user_data.email,
+            ts: new Date().toISOString().slice(0, 19).replace('T', ' '),
+            lat: user_data.lat,
+            lon: user_data.lon
+          }, (error, result) => {
+              if(error) {
+                  console.log(error)
+              } else {
+                console.log("pass")
+              }
+            }
+    );
+    db.query('SELECT * FROM race_location WHERE race_id = ?', [user_data.race_id], async (error, result) => {
+        if(error){
+            console.log(error)
+        } else {
+          socket.emit("update-regatta", JSON.stringify(result));
+        }
+
+
+      });
   });
   socket.on("disconnect", () => {
     console.log("user disconnected")
@@ -163,6 +185,8 @@ app.post("/auth/register", (req, res) => {
         })
     })
 })
+
+// deprecated... to remove
 app.post("/loc/send",(req, res) => {
   const { race_id, boat_id, email, ts, lat, lon } = req.body
   // PLACEHOLDER FOR VALIDATION

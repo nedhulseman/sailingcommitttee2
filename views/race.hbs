@@ -77,8 +77,10 @@
               //data = JSON.parse(data);
               var location_history = document.getElementById('location-history');
               location_history.innerHTML = ""
-              location_history.innerHTML = data;
-
+              //location_history.innerHTML = data;
+	      for (i in data){
+	         location_history.innerHTML +=  JSON.stringify(data[i]);
+	       }
          });
 
          function success(position) {
@@ -87,7 +89,7 @@
               var longitude = position.coords.longitude;
               //socket.emit('get-location', socket.id, [latitude, longitude]);
               data_to_send = {
-                  race_id: 1002,
+                  race_id: 1006,
                   boat_id: 1002,
                   email: "{{#if email }}{{email}}{{/if}}",
                   lat: latitude,
